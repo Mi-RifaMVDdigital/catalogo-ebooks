@@ -3,50 +3,112 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Catálogo Oficial de E-books</title>
+  <title>Librería Digital — E-books Prácticos</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-    body { background-color: #f4f6f8; color: #333; padding: 20px; }
-    header { text-align: center; margin-bottom: 30px; }
-    h1 { font-size: 2rem; color: #1a202c; }
-    p.subtitle { color: #718096; margin-top: 5px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; }
-    .card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between; padding: 20px; }
-    .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; }
-    .card h3 { font-size: 1.25rem; margin-bottom: 8px; color: #2d3748; }
-    .card p { font-size: 0.95rem; color: #4a5568; margin-bottom: 15px; flex-grow: 1; }
-    .price { font-size: 1.3rem; font-weight: bold; color: #2b6cb0; margin-bottom: 15px; }
-    .btn-wa { display: block; width: 100%; text-align: center; background-color: #25d366; color: white; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: bold; transition: background 0.2s; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    
+    /* Fondo verde claro bonito y descansado a la vista */
+    body { background-color: #f0fdf4; color: #1e293b; padding-bottom: 40px; }
+    
+    /* Barra superior de confianza colombiana */
+    .top-bar { background-color: #166534; color: #ffffff; text-align: center; padding: 10px 15px; font-size: 0.9rem; font-weight: 600; }
+    
+    header { text-align: center; padding: 30px 20px 10px 20px; max-width: 800px; margin: 0 auto; }
+    h1 { font-size: 2.2rem; color: #0f172a; margin-bottom: 8px; font-weight: 800; }
+    p.subtitle { color: #475569; font-size: 1.05rem; margin-bottom: 20px; }
+    
+    /* BANNER VISUAL CON LA IMAGEN HERO INTEGRADA */
+    .hero-image-container { max-width: 1000px; margin: 0 auto 25px auto; padding: 0 20px; }
+    .hero-image { width: 100%; height: 320px; object-fit: cover; border-radius: 20px; box-shadow: 0 10px 25px -5px rgba(22, 101, 52, 0.15); border: 3px solid #ffffff; }
+
+    /* Buscador fácil */
+    .search-container { max-width: 600px; margin: 0 auto 25px auto; padding: 0 20px; }
+    .search-input { width: 100%; padding: 14px 22px; border-radius: 30px; border: 2px solid #bbf7d0; font-size: 1rem; outline: none; background-color: #ffffff; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+    .search-input:focus { border-color: #22c55e; }
+
+    /* Banner de Oferta Destacada (Trilogía) */
+    .combo-banner { background: linear-gradient(135deg, #15803d 0%, #16a34a 100%); color: white; border-radius: 16px; padding: 25px; max-width: 1000px; margin: 0 auto 30px auto; box-shadow: 0 10px 15px -3px rgba(22, 163, 74, 0.2); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; }
+    .combo-info h2 { font-size: 1.6rem; margin-bottom: 6px; }
+    .combo-info p { font-size: 0.95rem; opacity: 0.9; }
+    .combo-price { text-align: right; }
+    .price-tag-old { text-decoration: line-through; opacity: 0.7; font-size: 1rem; }
+    .price-tag-new { font-size: 2rem; font-weight: bold; color: #fef08a; }
+    .btn-combo { background-color: #ffffff; color: #15803d; text-decoration: none; padding: 12px 24px; border-radius: 30px; font-weight: bold; display: inline-block; margin-top: 10px; transition: transform 0.2s; }
+    .btn-combo:hover { transform: scale(1.03); }
+
+    /* Grid de catálogo */
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+    .card { background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #dcfce7; display: flex; flex-direction: column; justify-content: space-between; padding: 20px; transition: transform 0.2s; }
+    .card:hover { transform: translateY(-4px); }
+    .card img { width: 100%; height: 210px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
+    .card h3 { font-size: 1.2rem; color: #0f172a; margin-bottom: 8px; font-weight: 700; }
+    .card p { font-size: 0.9rem; color: #64748b; margin-bottom: 15px; flex-grow: 1; line-height: 1.4; }
+    .card-footer { border-top: 1px solid #f1f5f9; padding-top: 15px; display: flex; align-items: center; justify-content: space-between; }
+    .price { font-size: 1.35rem; font-weight: 800; color: #15803d; }
+    .btn-wa { background-color: #25d366; color: white; text-decoration: none; padding: 10px 18px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; transition: background 0.2s; }
     .btn-wa:hover { background-color: #1eb857; }
-    #loading { text-align: center; padding: 40px; font-size: 1.1rem; color: #718096; }
+    
+    #loading { text-align: center; padding: 40px; font-size: 1.1rem; color: #166534; font-weight: 600; }
   </style>
-  <!-- Cargamos la librería de Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
+  <!-- Garantía de Confianza Superior -->
+  <div class="top-bar">
+    ⚡ Entrega Inmediata a tu WhatsApp al confirmar tu pago por Nequi o Bancolombia 📱
+  </div>
+
   <header>
-    <h1>Catálogo de E-books Digitales</h1>
-    <p class="subtitle">Aprende habilidades prácticas con guías paso a paso</p>
+    <h1>Catálogo Oficial de E-books</h1>
+    <p class="subtitle">Guías prácticas y de rápida lectura para mejorar tus habilidades hoy mismo</p>
   </header>
 
-  <div id="loading">Cargando catálogo...</div>
+  <!-- BANNER CON LA IMAGEN INTEGRADA -->
+  <div class="hero-image-container">
+    <img src="hero-bg.jpeg" alt="E-books digitales y finanzas" class="hero-image">
+  </div>
+
+  <!-- Buscador Fácil -->
+  <div class="search-container">
+    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar un e-book por título..." onkeyup="filtrarLibros()">
+  </div>
+
+  <!-- Banner de Oferta Especial Combo (Trilogía) -->
+  <div style="padding: 0 20px;">
+    <div class="combo-banner">
+      <div class="combo-info">
+        <h2>🔥 MEGA PACK: TRILOGÍA COMPLETA</h2>
+        <p>Lleva los 3 E-books principales del catálogo y acelera tu aprendizaje.</p>
+        <a href="#" id="btnComboWa" target="_blank" class="btn-combo">Pedir Pack por WhatsApp 🚀</a>
+      </div>
+      <div class="combo-price">
+        <div class="price-tag-old">$59.700 COP</div>
+        <div class="price-tag-new">$39.900 COP</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="loading">Cargando e-books disponibles...</div>
   <div class="grid" id="catalogo"></div>
 
   <script>
-    // 1. REEMPLAZA ESTOS TRES VALORES CON TUS DATOS DIRECTOS
+    // CREDENCIALES SUPABASE
     const SUPABASE_URL = 'https://kmhnfeqjjspzbfekzlnz.supabase.co'; 
     const SUPABASE_KEY = 'sb_publishable_ps5LZJw82pRYojwsfKtM9A_Y8hc7DOQ';          
-    const PHONE_WHATSAPP = '573161079509';                
+    const PHONE_WHATSAPP = '573161079509'; // Reemplaza por el WhatsApp de tu hija con código de país 57
 
-    // 2. Inicializamos la conexión (usamos 'clienteSupabase' para evitar duplicidad de nombres)
     const clienteSupabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    let ebooksGlobales = [];
+
+    // Configurar el botón del Mega Pack Combo
+    const textCombo = encodeURIComponent('Hola! Quiero aprovechar la oferta del MEGA PACK: TRILOGÍA COMPLETA por $39.900 COP');
+    document.getElementById('btnComboWa').href = `https://wa.me/${PHONE_WHATSAPP}?text=${textCombo}`;
 
     async function cargarCatálogo() {
       const container = document.getElementById('catalogo');
       const loading = document.getElementById('loading');
 
-      // Consultamos la tabla 'ebooks' en Supabase
       const { data: ebooks, error } = await clienteSupabase
         .from('ebooks')
         .select('*')
@@ -56,23 +118,30 @@
       loading.style.display = 'none';
 
       if (error) {
-        console.error('Error al conectar con Supabase:', error);
-        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: red;">Error al consultar la base de datos.</p>';
+        console.error(error);
+        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: red;">Error al conectar con la base de datos.</p>';
         return;
       }
 
-      if (!ebooks || ebooks.length === 0) {
-        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No hay e-books en la base de datos.</p>';
+      ebooksGlobales = ebooks || [];
+      renderizarTarjetas(ebooksGlobales);
+    }
+
+    function renderizarTarjetas(lista) {
+      const container = document.getElementById('catalogo');
+      container.innerHTML = '';
+
+      if (lista.length === 0) {
+        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #475569;">No se encontraron e-books con ese título.</p>';
         return;
       }
 
-      // Dibujamos las tarjetas de e-books en la pantalla
-      ebooks.forEach(item => {
+      lista.forEach(item => {
         const card = document.createElement('div');
         card.className = 'card';
         
         const precioFormateado = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(item.precio_cop);
-        const textWa = encodeURIComponent(`Hola, quiero comprar el e-book "${item.titulo}" por ${precioFormateado}`);
+        const textWa = encodeURIComponent(`Hola, me interesa comprar el e-book "${item.titulo}" por ${precioFormateado}`);
         const linkWa = `https://wa.me/${PHONE_WHATSAPP}?text=${textWa}`;
         const imgHtml = item.imagen_url ? `<img src="${item.imagen_url}" alt="${item.titulo}">` : '';
 
@@ -82,13 +151,19 @@
             <h3>${item.titulo}</h3>
             <p>${item.descripcion || ''}</p>
           </div>
-          <div>
+          <div class="card-footer">
             <div class="price">${precioFormateado}</div>
-            <a href="${linkWa}" target="_blank" onclick="registrarClick('${item.id}')" class="btn-wa">Comprar por WhatsApp</a>
+            <a href="${linkWa}" target="_blank" onclick="registrarClick('${item.id}')" class="btn-wa">Comprar</a>
           </div>
         `;
         container.appendChild(card);
       });
+    }
+
+    function filtrarLibros() {
+      const texto = document.getElementById('searchInput').value.toLowerCase();
+      const filtrados = ebooksGlobales.filter(book => book.titulo.toLowerCase().includes(texto));
+      renderizarTarjetas(filtrados);
     }
 
     async function registrarClick(ebookId) {
