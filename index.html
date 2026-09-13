@@ -20,7 +20,7 @@
     .btn-wa:hover { background-color: #1eb857; }
     #loading { text-align: center; padding: 40px; font-size: 1.1rem; color: #718096; }
   </style>
-  <!-- CDN de Supabase JS -->
+  <!-- Cargamos la librería de Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
@@ -34,18 +34,20 @@
   <div class="grid" id="catalogo"></div>
 
   <script>
-    // CREDENCIALES DE TU PROYECTO SUPABASE
-    const SUPABASE_URL = 'https://kmhnfeqjjspzbfekzlnz.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_ps5LZJw82pRYojwsfKtM9A_Y8hc7DOQ';
-    const PHONE_WHATSAPP = '573001234567'; // Reemplaza por tu número con código de país (ej: 57 para Col)
+    // 1. REEMPLAZA ESTOS TRES VALORES CON TUS DATOS DIRECTOS
+    const SUPABASE_URL = 'https://kmhnfeqjjspzbfekzlnz.supabase.co'; 
+    const SUPABASE_KEY = 'sb_publishable_ps5LZJw82pRYojwsfKtM9A_Y8hc7DOQ';          
+    const PHONE_WHATSAPP = '573161079509';                
 
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    // 2. Inicializamos la conexión (usamos 'clienteSupabase' para evitar duplicidad de nombres)
+    const clienteSupabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     async function cargarCatálogo() {
       const container = document.getElementById('catalogo');
       const loading = document.getElementById('loading');
 
-      const { data: ebooks, error } = await supabase
+      // Consultamos la tabla 'ebooks' en Supabase
+      const { data: ebooks, error } = await clienteSupabase
         .from('ebooks')
         .select('*')
         .eq('activo', true)
@@ -54,16 +56,17 @@
       loading.style.display = 'none';
 
       if (error) {
-        console.error('Error al cargar datos:', error);
-        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: red;">Error al cargar el catálogo.</p>';
+        console.error('Error al conectar con Supabase:', error);
+        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: red;">Error al consultar la base de datos.</p>';
         return;
       }
 
       if (!ebooks || ebooks.length === 0) {
-        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No hay e-books disponibles por el momento.</p>';
+        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No hay e-books en la base de datos.</p>';
         return;
       }
 
+      // Dibujamos las tarjetas de e-books en la pantalla
       ebooks.forEach(item => {
         const card = document.createElement('div');
         card.className = 'card';
@@ -71,7 +74,6 @@
         const precioFormateado = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(item.precio_cop);
         const textWa = encodeURIComponent(`Hola, quiero comprar el e-book "${item.titulo}" por ${precioFormateado}`);
         const linkWa = `https://wa.me/${PHONE_WHATSAPP}?text=${textWa}`;
-
         const imgHtml = item.imagen_url ? `<img src="${item.imagen_url}" alt="${item.titulo}">` : '';
 
         card.innerHTML = `
@@ -90,7 +92,7 @@
     }
 
     async function registrarClick(ebookId) {
-      await supabase.from('leads_whatsapp').insert([{ ebook_id: ebookId, origen: 'landing_page' }]);
+      await clienteSupabase.from('leads_whatsapp').insert([{ ebook_id: ebookId, origen: 'landing_page' }]);
     }
 
     document.addEventListener('DOMContentLoaded', cargarCatálogo);
