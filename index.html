@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catálogo Oficial de E-books</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background-color: #f4f6f8; color: #333; padding: 20px; }
+    header { text-align: center; margin-bottom: 30px; }
+    h1 { font-size: 2rem; color: #1a202c; }
+    p.subtitle { color: #718096; margin-top: 5px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; }
+    .card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between; padding: 20px; }
+    .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; }
+    .card h3 { font-size: 1.25rem; margin-bottom: 8px; color: #2d3748; }
+    .card p { font-size: 0.95rem; color: #4a5568; margin-bottom: 15px; flex-grow: 1; }
+    .price { font-size: 1.3rem; font-weight: bold; color: #2b6cb0; margin-bottom: 15px; }
+    .btn-wa { display: block; width: 100%; text-align: center; background-color: #25d366; color: white; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: bold; transition: background 0.2s; }
+    .btn-wa:hover { background-color: #1eb857; }
+    #loading { text-align: center; padding: 40px; font-size: 1.1rem; color: #718096; }
+  </style>
+  <!-- CDN de Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <header>
+    <h1>Catálogo de E-books Digitales</h1>
+    <p class="subtitle">Aprende habilidades prácticas con guías paso a paso</p>
+  </header>
+
+  <div id="loading">Cargando catálogo...</div>
+  <div class="grid" id="catalogo"></div>
+
+  <script>
+    // CREDENCIALES DE TU PROYECTO SUPABASE
+    const SUPABASE_URL = 'https://kmhnfeqjjspzbfekzlnz.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_ps5LZJw82pRYojwsfKtM9A_Y8hc7DOQ';
+    const PHONE_WHATSAPP = '573001234567'; // Reemplaza por tu número con código de país (ej: 57 para Col)
+
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function cargarCatálogo() {
+      const container = document.getElementById('catalogo');
+      const loading = document.getElementById('loading');
+
+      const { data: ebooks, error } = await supabase
+        .from('ebooks')
+        .select('*')
+        .eq('activo', true)
+        .order('created_at', { ascending: false });
+
+      loading.style.display = 'none';
+
+      if (error) {
+        console.error('Error al cargar datos:', error);
+        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: red;">Error al cargar el catálogo.</p>';
+        return;
+      }
+
+      if (!ebooks || ebooks.length === 0) {
+        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No hay e-books disponibles por el momento.</p>';
+        return;
+      }
+
+      ebooks.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        
+        const precioFormateado = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(item.precio_cop);
+        const textWa = encodeURIComponent(`Hola, quiero comprar el e-book "${item.titulo}" por ${precioFormateado}`);
+        const linkWa = `https://wa.me/${PHONE_WHATSAPP}?text=${textWa}`;
+
+        const imgHtml = item.imagen_url ? `<img src="${item.imagen_url}" alt="${item.titulo}">` : '';
+
+        card.innerHTML = `
+          <div>
+            ${imgHtml}
+            <h3>${item.titulo}</h3>
+            <p>${item.descripcion || ''}</p>
+          </div>
+          <div>
+            <div class="price">${precioFormateado}</div>
+            <a href="${linkWa}" target="_blank" onclick="registrarClick('${item.id}')" class="btn-wa">Comprar por WhatsApp</a>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    async function registrarClick(ebookId) {
+      await supabase.from('leads_whatsapp').insert([{ ebook_id: ebookId, origen: 'landing_page' }]);
+    }
+
+    document.addEventListener('DOMContentLoaded', cargarCatálogo);
+  </script>
+</body>
+</html>
