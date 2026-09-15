@@ -33,7 +33,7 @@
       font-weight: 600;
     }
 
- /* CAJA DEL VIDEO EN BUCLE (ADAPTACIÓN PERFECTA COMPUTADOR + CELULAR) */
+    /* CAJA DEL VIDEO EN BUCLE */
     .hero-video-container {
       position: relative;
       max-width: 850px;
@@ -45,7 +45,7 @@
       position: relative;
       width: 100%;
       height: auto;
-      aspect-ratio: 16 / 9; /* Encaja la caja a la proporción exacta del video */
+      aspect-ratio: 16 / 9;
       border-radius: 16px;
       overflow: hidden;
       box-shadow: 0 10px 25px -5px rgba(22, 101, 52, 0.2);
@@ -56,21 +56,20 @@
     .hero-video {
       width: 100%;
       height: 100%;
-      object-fit: cover; /* Llena la caja completamente en PC sin franjas */
+      object-fit: cover;
       object-position: center;
       display: block;
     }
 
-    /* AJUSTE EXCLUSIVO PARA CELULARES (< 600px) */
+    /* AJUSTE PARA CELULAR (< 600px) */
     @media (max-width: 600px) {
       .video-box {
-        height: 240px; /* Mantiene la altura que ya funcionó bien en celular */
+        height: 240px;
         aspect-ratio: auto;
       }
-      
       .hero-video {
         object-fit: cover;
-        object-position: center 35%; /* Muestra subtítulos centrados en pantalla móvil */
+        object-position: center 35%;
       }
     }
 
@@ -94,7 +93,7 @@
 
     .search-input:focus { border-color: #22c55e; }
 
-    /* BANNER MEGA PACK */
+    /* BANNER MEGA PACK CON TEMPORIZADOR */
     .combo-banner {
       background: linear-gradient(135deg, #15803d 0%, #16a34a 100%);
       color: white;
@@ -112,6 +111,18 @@
 
     .combo-info h2 { font-size: 1.6rem; margin-bottom: 6px; }
     .combo-info p { font-size: 0.95rem; opacity: 0.9; }
+    
+    .timer-box {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      background: rgba(0, 0, 0, 0.2);
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+    #timer { color: #fef08a; font-weight: bold; }
+
     .combo-price { text-align: right; }
     .price-tag-old { text-decoration: line-through; opacity: 0.7; font-size: 1rem; }
     .price-tag-new { font-size: 2rem; font-weight: bold; color: #fef08a; }
@@ -150,9 +161,25 @@
       flex-direction: column; 
       justify-content: space-between; 
       padding: 20px; 
+      position: relative;
       transition: transform 0.2s; 
     }
     .card:hover { transform: translateY(-4px); }
+
+    /* BADGE EN LA PORTADA */
+    .badge-discount {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background-color: #ef4444;
+      color: white;
+      font-size: 0.75rem;
+      font-weight: bold;
+      padding: 4px 10px;
+      border-radius: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      z-index: 5;
+    }
 
     .card img { 
       width: 100%; 
@@ -181,10 +208,67 @@
     .btn-wa:hover { background-color: #1eb857; }
     
     #loading { text-align: center; padding: 40px; font-size: 1.1rem; color: #166534; font-weight: 600; }
+
+    /* SECCIÓN DE TESTIMONIOS (PRUEBA SOCIAL) */
+    .section-container {
+      max-width: 1000px;
+      margin: 50px auto 0 auto;
+      padding: 0 20px;
+    }
+    .section-title {
+      text-align: center;
+      font-size: 1.6rem;
+      color: #0f172a;
+      margin-bottom: 25px;
+      font-weight: 800;
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .review-card {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 14px;
+      border: 1px solid #dcfce7;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .stars { color: #f59e0b; margin-bottom: 8px; }
+    .review-text { font-size: 0.9rem; color: #475569; font-style: italic; margin-bottom: 12px; }
+    .review-author { font-size: 0.85rem; font-weight: bold; color: #166534; }
+
+    /* PREGUNTAS FRECUENTES (FAQ ACORDEÓN) */
+    .faq-item {
+      background: #ffffff;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      border: 1px solid #dcfce7;
+      overflow: hidden;
+    }
+    .faq-question {
+      padding: 16px 20px;
+      font-weight: 700;
+      color: #0f172a;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .faq-answer {
+      padding: 0 20px 16px 20px;
+      font-size: 0.9rem;
+      color: #64748b;
+      display: none;
+    }
+    .faq-item.active .faq-answer { display: block; }
+    .faq-item.active .faq-question { color: #15803d; }
   </style>
 </head>
 <body>
 
+  <!-- BARRA SUPERIOR -->
   <div class="top-bar">
     ⚡ Entrega Inmediata a tu WhatsApp al confirmar tu pago por Nequi o Bancolombia 📱
   </div>
@@ -194,7 +278,7 @@
     <p style="color: #475569; font-size: 1.05rem;">Guías prácticas y de rápida lectura para dominar tu dinero</p>
   </header>
 
-  <!-- CAJA DEL VIDEO CON LA URL DIRECTA DE SUPABASE -->
+  <!-- CAJA CON VIDEO EN BUCLE DESDE SUPABASE -->
   <div class="hero-video-container">
     <div class="video-box">
       <video autoplay loop muted playsinline preload="auto" class="hero-video">
@@ -204,15 +288,19 @@
     </div>
   </div>
 
+  <!-- BUSCADOR -->
   <div class="search-container">
     <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar un e-book por título..." onkeyup="filtrarLibros()">
   </div>
 
+  <!-- BANNER MEGA PACK CON RELOJ REGRESIVO -->
   <div style="padding: 0 20px;">
     <div class="combo-banner">
       <div class="combo-info">
         <h2>🔥 MEGA PACK: TRILOGÍA COMPLETA</h2>
         <p>Lleva los 3 E-books principales del catálogo y acelera tu aprendizaje.</p>
+        <div class="timer-box">⏳ La oferta expira en: <span id="timer">04:59:59</span></div>
+        <br>
         <a href="#" id="btnComboWa" target="_blank" class="btn-combo">Pedir Pack por WhatsApp 🚀</a>
       </div>
       <div class="combo-price">
@@ -225,6 +313,53 @@
   <div id="loading">Cargando e-books disponibles...</div>
   <div class="grid" id="catalogo"></div>
 
+  <!-- SECCIÓN PRUEBA SOCIAL / TESTIMONIOS -->
+  <div class="section-container">
+    <h2 class="section-title">⭐ Lo que opinan nuestros lectores</h2>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="stars">⭐⭐⭐⭐⭐</div>
+        <p class="review-text">"Pude organizar las deudas de mi tarjeta de crédito en 2 semanas. Muy fácil de entender y aplicar."</p>
+        <p class="review-author">— Andrea G. (Medellín)</p>
+      </div>
+      <div class="review-card">
+        <div class="stars">⭐⭐⭐⭐⭐</div>
+        <p class="review-text">"El PDF me llegó al WhatsApp apenas envié el pago por Nequi. Excelente atención y contenido super directo."</p>
+        <p class="review-author">— Camilo R. (Bogotá)</p>
+      </div>
+      <div class="review-card">
+        <div class="stars">⭐⭐⭐⭐⭐</div>
+        <p class="review-text">"Compré la Trilogía en oferta y ha sido la mejor inversión. No tiene relleno técnico aburrido."</p>
+        <p class="review-author">— Diana P. (Cali)</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN PREGUNTAS FRECUENTES (FAQ ACORDEÓN) -->
+  <div class="section-container" style="margin-bottom: 30px;">
+    <h2 class="section-title">❓ Preguntas Frecuentes</h2>
+    
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question"><span>¿Cómo recibo mi e-book en PDF?</span> <span>▼</span></div>
+      <div class="faq-answer">Una vez confirmado tu pago por Nequi o Bancolombia, te enviamos el archivo PDF y el enlace directo de descarga directamente a tu chat de WhatsApp[cite: 2, 3].</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question"><span>¿Cuánto tiempo tarda la entrega?</span> <span>▼</span></div>
+      <div class="faq-answer">La entrega es casi inmediata (menos de 5 minutos) en horario laboral tras validar tu comprobante de pago[cite: 2, 3].</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question"><span>¿En qué dispositivos puedo leerlo?</span> <span>▼</span></div>
+      <div class="faq-answer">En cualquier celular, tablet, computador o lector de libros digital. Al ser un archivo PDF estándar, puedes guardarlo para siempre[cite: 2, 3].</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question"><span>¿Cuáles son los medios de pago aceptados?</span> <span>▼</span></div>
+      <div class="faq-answer">Aceptamos transferencias por Nequi, Bancolombia y código QR[cite: 2, 3].</div>
+    </div>
+  </div>
+
   <script>
     const SUPABASE_URL = 'https://kmhnfeqjjspzbfekzlnz.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_ps5LZJw82pRYojwsfKtM9A_Y8hc7DOQ';
@@ -233,6 +368,7 @@
     const clienteSupabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     let ebooksGlobales = [];
 
+    // Link WhatsApp Combo
     const textCombo = encodeURIComponent('Hola! Quiero aprovechar la oferta del MEGA PACK: TRILOGÍA COMPLETA por $39.900 COP');
     document.getElementById('btnComboWa').href = `https://wa.me/${PHONE_WHATSAPP}?text=${textCombo}`;
 
@@ -277,6 +413,7 @@
         const imgHtml = item.imagen_url ? `<img src="${item.imagen_url}" alt="${item.titulo}">` : '';
 
         card.innerHTML = `
+          <span class="badge-discount">🔥 MÁS VENDIDO</span>
           <div>
             ${imgHtml}
             <h3>${item.titulo}</h3>
@@ -301,7 +438,37 @@
       await clienteSupabase.from('leads_whatsapp').insert([{ ebook_id: ebookId, origen: 'landing_page' }]);
     }
 
-    document.addEventListener('DOMContentLoaded', cargarCatálogo);
+    // Lógica para desplegar preguntas frecuentes
+    function toggleFaq(element) {
+      element.classList.toggle('active');
+    }
+
+    // Lógica de Temporizador Regresivo (Urgencia)
+    function iniciarTemporizador(duracionMinutos) {
+      let tiempo = duracionMinutos * 60;
+      const display = document.getElementById('timer');
+      
+      setInterval(function () {
+        let horas = parseInt(tiempo / 3600, 10);
+        let minutos = parseInt((tiempo % 3600) / 60, 10);
+        let segundos = parseInt(tiempo % 60, 10);
+
+        horas = horas < 10 ? "0" + horas : horas;
+        minutos = minutos < 10 ? "0" + minutos : minutos;
+        segundos = segundos < 10 ? "0" + segundos : segundos;
+
+        display.textContent = horas + ":" + minutos + ":" + segundos;
+
+        if (--tiempo < 0) {
+          tiempo = duracionMinutos * 60; // reinicia ciclo
+        }
+      }, 1000);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      cargarCatálogo();
+      iniciarTemporizador(300); // 5 horas regresivas de oferta
+    });
   </script>
 </body>
 </html>
