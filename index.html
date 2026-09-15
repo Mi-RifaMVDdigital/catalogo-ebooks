@@ -33,7 +33,7 @@
       font-weight: 600;
     }
 
-   /* CAJA DEL VIDEO EN BUCLE (ADAPTABLE Y SIN CORTAR SUBTÍTULOS) */
+  /* CAJA DEL VIDEO EN BUCLE (ESPECIAL PARA CELULARES Y MONITOR) */
     .hero-video-container {
       position: relative;
       max-width: 900px;
@@ -44,26 +44,30 @@
     .video-box {
       position: relative;
       width: 100%;
-      height: auto;
-      aspect-ratio: 16 / 9; /* Proporción estándar de video panorámico */
+      height: 380px;
       border-radius: 16px;
       overflow: hidden;
       box-shadow: 0 10px 25px -5px rgba(22, 101, 52, 0.2);
       border: 3px solid #ffffff;
-      background-color: #0f172a;
+      background-color: #f0fdf4; /* Mantiene el tono verde pastel corporativo */
     }
 
     .hero-video {
       width: 100%;
       height: 100%;
-      object-fit: contain; /* Encuadra el video ENTERO sin recortar texto ni subtítulos */
+      object-fit: contain; /* En computadora muestra el video completo */
       display: block;
     }
 
-    /* AJUSTE PARA PANTALLAS DE CELULAR */
+    /* AJUSTE EXCLUSIVO PARA PANTALLAS DE CELULAR (< 600px) */
     @media (max-width: 600px) {
       .video-box {
-        aspect-ratio: 4 / 3; /* Da más espacio vertical en móviles */
+        height: 240px; /* Reduce la altura de la caja en móviles */
+      }
+      
+      .hero-video {
+        object-fit: cover; /* En celular llena toda la caja sin franjas */
+        object-position: center 30%; /* Ajusta el encuadre para mostrar los subtítulos centrados */
       }
     }
 
