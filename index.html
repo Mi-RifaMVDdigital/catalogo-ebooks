@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Librería Digital | Finanzas sin Filtro</title>
+  <title>Librería Digital | MVDdigital</title>
   
   <!-- SDK Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   
   <style>
-    /* RESET & ESTILOS VERDE MINT */
+    /* RESET & ESTILOS MEJORADOS MVDDIGITAL */
     * {
       margin: 0;
       padding: 0;
@@ -18,19 +18,21 @@
     }
 
     body {
-      background-color: #f0fdf4;
+      background-color: #d1fae5; /* Verde menta más intenso que resalta las tarjetas blancas */
       color: #1e293b;
       line-height: 1.6;
-      padding-bottom: 40px;
+      padding-bottom: 0px;
     }
 
+    /* BARRA SUPERIOR IMPACTO */
     .top-bar {
-      background-color: #166534;
+      background-color: #064e3b;
       color: #ffffff;
       text-align: center;
-      padding: 10px 15px;
-      font-size: 0.9rem;
-      font-weight: 600;
+      padding: 11px 15px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
     /* CAJA DEL VIDEO EN BUCLE */
@@ -46,11 +48,11 @@
       width: 100%;
       height: auto;
       aspect-ratio: 16 / 9;
-      border-radius: 16px;
+      border-radius: 18px;
       overflow: hidden;
-      box-shadow: 0 10px 25px -5px rgba(22, 101, 52, 0.2);
+      box-shadow: 0 12px 28px -5px rgba(6, 78, 59, 0.25);
       border: 3px solid #ffffff;
-      background-color: #f0fdf4;
+      background-color: #d1fae5;
     }
 
     .hero-video {
@@ -61,7 +63,7 @@
       display: block;
     }
 
-    /* AJUSTE PARA CELULAR (< 600px) */
+    /* RESPONSIVE CELULAR (< 600px) */
     @media (max-width: 600px) {
       .video-box {
         height: 240px;
@@ -84,24 +86,25 @@
       width: 100%;
       padding: 14px 22px;
       border-radius: 30px;
-      border: 2px solid #bbf7d0;
+      border: 2px solid #6ee7b7;
       font-size: 1rem;
       outline: none;
       background-color: #ffffff;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
 
-    .search-input:focus { border-color: #22c55e; }
+    .search-input:focus { border-color: #059669; }
 
-    /* BANNER MEGA PACK CON TEMPORIZADOR */
+    /* BANNER MEGA PACK CON RELOJ */
     .combo-banner {
-      background: linear-gradient(135deg, #15803d 0%, #16a34a 100%);
+      background: linear-gradient(135deg, #047857 0%, #10b981 100%);
       color: white;
-      border-radius: 16px;
+      border-radius: 18px;
       padding: 25px;
       max-width: 1000px;
       margin: 0 auto 30px auto;
-      box-shadow: 0 10px 15px -3px rgba(22, 163, 74, 0.2);
+      box-shadow: 0 12px 24px -4px rgba(4, 120, 87, 0.3);
+      border: 2px solid #ffffff;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
@@ -110,37 +113,38 @@
     }
 
     .combo-info h2 { font-size: 1.6rem; margin-bottom: 6px; }
-    .combo-info p { font-size: 0.95rem; opacity: 0.9; }
+    .combo-info p { font-size: 0.95rem; opacity: 0.95; }
     
     .timer-box {
       margin-top: 10px;
       font-size: 0.85rem;
-      background: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.25);
       display: inline-block;
-      padding: 5px 12px;
+      padding: 6px 14px;
       border-radius: 20px;
       font-weight: 600;
     }
     #timer { color: #fef08a; font-weight: bold; }
 
     .combo-price { text-align: right; }
-    .price-tag-old { text-decoration: line-through; opacity: 0.7; font-size: 1rem; }
-    .price-tag-new { font-size: 2rem; font-weight: bold; color: #fef08a; }
+    .price-tag-old { text-decoration: line-through; opacity: 0.75; font-size: 1rem; }
+    .price-tag-new { font-size: 2.1rem; font-weight: bold; color: #fef08a; }
     
     .btn-combo {
       background-color: #ffffff;
-      color: #15803d;
+      color: #047857;
       text-decoration: none;
       padding: 12px 24px;
       border-radius: 30px;
       font-weight: bold;
       display: inline-block;
       margin-top: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       transition: transform 0.2s;
     }
     .btn-combo:hover { transform: scale(1.03); }
 
-    /* GRID DE LIBROS */
+    /* GRID DE LIBROS Y TARJETAS */
     .grid { 
       display: grid; 
       grid-template-columns: repeat(auto-fit, minmax(280px, 340px)); 
@@ -153,20 +157,22 @@
     
     .card { 
       background: #ffffff; 
-      border-radius: 16px; 
+      border-radius: 18px; 
       overflow: hidden; 
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
-      border: 1px solid #dcfce7; 
+      box-shadow: 0 10px 20px -5px rgba(6, 78, 59, 0.12) !important; 
+      border: 1px solid #6ee7b7 !important; 
       display: flex; 
       flex-direction: column; 
       justify-content: space-between; 
       padding: 20px; 
       position: relative;
-      transition: transform 0.2s; 
+      transition: transform 0.2s, box-shadow 0.2s; 
     }
-    .card:hover { transform: translateY(-4px); }
+    .card:hover { 
+      transform: translateY(-5px); 
+      box-shadow: 0 15px 25px -5px rgba(6, 78, 59, 0.2) !important;
+    }
 
-    /* BADGE EN LA PORTADA */
     .badge-discount {
       position: absolute;
       top: 15px;
@@ -193,7 +199,7 @@
     .card h3 { font-size: 1.2rem; color: #0f172a; margin-bottom: 8px; font-weight: 700; }
     .card p { font-size: 0.9rem; color: #64748b; margin-bottom: 15px; flex-grow: 1; line-height: 1.4; }
     .card-footer { border-top: 1px solid #f1f5f9; padding-top: 15px; display: flex; align-items: center; justify-content: space-between; }
-    .price { font-size: 1.35rem; font-weight: 800; color: #15803d; }
+    .price { font-size: 1.35rem; font-weight: 800; color: #047857; }
     
     .btn-wa { 
       background-color: #25d366; 
@@ -203,18 +209,24 @@
       border-radius: 8px; 
       font-weight: 700; 
       font-size: 0.9rem; 
+      box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3);
       transition: background 0.2s; 
     }
     .btn-wa:hover { background-color: #1eb857; }
     
-    #loading { text-align: center; padding: 40px; font-size: 1.1rem; color: #166534; font-weight: 600; }
+    #loading { text-align: center; padding: 40px; font-size: 1.1rem; color: #064e3b; font-weight: 700; }
 
-    /* SECCIÓN DE TESTIMONIOS (PRUEBA SOCIAL) */
+    /* CONTENEDOR DE SECCIONES GENERALES */
     .section-container {
       max-width: 1000px;
-      margin: 50px auto 0 auto;
-      padding: 0 20px;
+      margin: 40px auto;
+      padding: 30px 20px;
+      background-color: rgba(255, 255, 255, 0.65);
+      border-radius: 20px;
+      border: 1px solid #a7f3d0;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
     }
+
     .section-title {
       text-align: center;
       font-size: 1.6rem;
@@ -223,6 +235,7 @@
       font-weight: 800;
     }
 
+    /* SECCIÓN TESTIMONIOS */
     .reviews-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -231,20 +244,21 @@
     .review-card {
       background: #ffffff;
       padding: 20px;
-      border-radius: 14px;
-      border: 1px solid #dcfce7;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      border-radius: 16px;
+      border: 1px solid #6ee7b7 !important;
+      box-shadow: 0 8px 16px -4px rgba(6, 78, 59, 0.08) !important;
     }
     .stars { color: #f59e0b; margin-bottom: 8px; }
-    .review-text { font-size: 0.9rem; color: #475569; font-style: italic; margin-bottom: 12px; }
-    .review-author { font-size: 0.85rem; font-weight: bold; color: #166534; }
+    .review-text { font-size: 0.9rem; color: #334155; font-style: italic; margin-bottom: 12px; }
+    .review-author { font-size: 0.85rem; font-weight: bold; color: #047857; }
 
     /* PREGUNTAS FRECUENTES (FAQ ACORDEÓN) */
     .faq-item {
       background: #ffffff;
-      border-radius: 10px;
+      border-radius: 12px;
       margin-bottom: 12px;
-      border: 1px solid #dcfce7;
+      border: 1px solid #6ee7b7 !important;
+      box-shadow: 0 4px 10px -2px rgba(6, 78, 59, 0.05) !important;
       overflow: hidden;
     }
     .faq-question {
@@ -259,11 +273,34 @@
     .faq-answer {
       padding: 0 20px 16px 20px;
       font-size: 0.9rem;
-      color: #64748b;
+      color: #475569;
       display: none;
     }
     .faq-item.active .faq-answer { display: block; }
-    .faq-item.active .faq-question { color: #15803d; }
+    .faq-item.active .faq-question { color: #047857; }
+
+    /* SECCIÓN DE GARANTÍA */
+    .guarantee-box {
+      background: #ffffff;
+      border: 2px dashed #059669;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      margin: 30px auto 0 auto;
+      max-width: 960px;
+    }
+    .guarantee-box h3 { color: #047857; font-size: 1.15rem; margin-bottom: 6px; }
+    .guarantee-box p { font-size: 0.9rem; color: #475569; }
+
+    /* PIE DE PÁGINA (FOOTER) */
+    footer {
+      background-color: #064e3b;
+      color: #ffffff;
+      text-align: center;
+      padding: 25px 20px;
+      margin-top: 50px;
+      font-size: 0.88rem;
+    }
   </style>
 </head>
 <body>
@@ -273,16 +310,17 @@
     ⚡ Entrega Inmediata a tu WhatsApp al confirmar tu pago por Nequi o Bancolombia 📱
   </div>
 
+  <!-- ENCABEZADO OFICIAL -->
   <header style="text-align: center; padding: 30px 20px 10px 20px;">
     <h1 style="font-size: 2.2rem; color: #0f172a; margin-bottom: 8px; font-weight: 800;">
       Catálogo Oficial MVDdigital
     </h1>
-    <p style="color: #166534; font-size: 1.1rem; font-weight: 600;">
+    <p style="color: #047857; font-size: 1.1rem; font-weight: 600;">
       E-books en PDF para dominar tus finanzas y hacer crecer tu negocio
     </p>
   </header>
 
-  <!-- CAJA CON VIDEO EN BUCLE DESDE SUPABASE -->
+  <!-- CAJA DEL VIDEO EN BUCLE -->
   <div class="hero-video-container">
     <div class="video-box">
       <video autoplay loop muted playsinline preload="auto" class="hero-video">
@@ -297,7 +335,7 @@
     <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar un e-book por título..." onkeyup="filtrarLibros()">
   </div>
 
-  <!-- BANNER MEGA PACK CON RELOJ REGRESIVO -->
+  <!-- BANNER MEGA PACK -->
   <div style="padding: 0 20px;">
     <div class="combo-banner">
       <div class="combo-info">
@@ -314,10 +352,19 @@
     </div>
   </div>
 
+  <!-- CATÁLOGO DINÁMICO DESDE SUPABASE -->
   <div id="loading">Cargando e-books disponibles...</div>
   <div class="grid" id="catalogo"></div>
 
-  <!-- SECCIÓN PRUEBA SOCIAL / TESTIMONIOS -->
+  <!-- BLOQUE DE GARANTÍA DE SATISFACCIÓN -->
+  <div style="padding: 0 20px;">
+    <div class="guarantee-box">
+      <h3>🛡️ Garantía de Calidad MVDdigital</h3>
+      <p>Contenido 100% práctico, estructurado y aplicable. Formato PDF descargable para guardar y leer en todos tus dispositivos.</p>
+    </div>
+  </div>
+
+  <!-- SECCIÓN TESTIMONIOS -->
   <div class="section-container">
     <h2 class="section-title">⭐ Lo que opinan nuestros lectores</h2>
     <div class="reviews-grid">
@@ -339,30 +386,36 @@
     </div>
   </div>
 
-  <!-- SECCIÓN PREGUNTAS FRECUENTES (FAQ ACORDEÓN) -->
-  <div class="section-container" style="margin-bottom: 30px;">
+  <!-- PREGUNTAS FRECUENTES -->
+  <div class="section-container">
     <h2 class="section-title">❓ Preguntas Frecuentes</h2>
     
     <div class="faq-item" onclick="toggleFaq(this)">
       <div class="faq-question"><span>¿Cómo recibo mi e-book en PDF?</span> <span>▼</span></div>
-      <div class="faq-answer">Una vez confirmado tu pago por Nequi o Bancolombia, te enviamos el archivo PDF y el enlace directo de descarga directamente a tu chat de WhatsApp[cite: 2, 3].</div>
+      <div class="faq-answer">Una vez confirmado tu pago por Nequi o Bancolombia, te enviamos el archivo PDF y el enlace de descarga oficial directamente a tu chat de WhatsApp.</div>
     </div>
 
     <div class="faq-item" onclick="toggleFaq(this)">
       <div class="faq-question"><span>¿Cuánto tiempo tarda la entrega?</span> <span>▼</span></div>
-      <div class="faq-answer">La entrega es casi inmediata (menos de 5 minutos) en horario laboral tras validar tu comprobante de pago[cite: 2, 3].</div>
+      <div class="faq-answer">La entrega es inmediata (menos de 5 minutos) en horario habitual tras verificar tu comprobante de pago.</div>
     </div>
 
     <div class="faq-item" onclick="toggleFaq(this)">
       <div class="faq-question"><span>¿En qué dispositivos puedo leerlo?</span> <span>▼</span></div>
-      <div class="faq-answer">En cualquier celular, tablet, computador o lector de libros digital. Al ser un archivo PDF estándar, puedes guardarlo para siempre[cite: 2, 3].</div>
+      <div class="faq-answer">En cualquier celular, tablet o computador. Al ser un archivo PDF estándar, te pertenece de por vida.</div>
     </div>
 
     <div class="faq-item" onclick="toggleFaq(this)">
       <div class="faq-question"><span>¿Cuáles son los medios de pago aceptados?</span> <span>▼</span></div>
-      <div class="faq-answer">Aceptamos transferencias por Nequi, Bancolombia y código QR[cite: 2, 3].</div>
+      <div class="faq-answer">Aceptamos transferencias directas por Nequi, Bancolombia y código QR.</div>
     </div>
   </div>
+
+  <!-- PIE DE PÁGINA -->
+  <footer>
+    <p><strong>MVDdigital © 2026</strong> — Todos los derechos reservados.</p>
+    <p style="opacity: 0.8; font-size: 0.8rem; margin-top: 4px;">Recursos educativos y guías prácticas en formato digital.</p>
+  </footer>
 
   <script>
     const SUPABASE_URL = 'https://kmhnfeqjjspzbfekzlnz.supabase.co';
@@ -372,7 +425,6 @@
     const clienteSupabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     let ebooksGlobales = [];
 
-    // Link WhatsApp Combo
     const textCombo = encodeURIComponent('Hola! Quiero aprovechar la oferta del MEGA PACK: TRILOGÍA COMPLETA por $39.900 COP');
     document.getElementById('btnComboWa').href = `https://wa.me/${PHONE_WHATSAPP}?text=${textCombo}`;
 
@@ -442,12 +494,10 @@
       await clienteSupabase.from('leads_whatsapp').insert([{ ebook_id: ebookId, origen: 'landing_page' }]);
     }
 
-    // Lógica para desplegar preguntas frecuentes
     function toggleFaq(element) {
       element.classList.toggle('active');
     }
 
-    // Lógica de Temporizador Regresivo (Urgencia)
     function iniciarTemporizador(duracionMinutos) {
       let tiempo = duracionMinutos * 60;
       const display = document.getElementById('timer');
@@ -464,14 +514,14 @@
         display.textContent = horas + ":" + minutos + ":" + segundos;
 
         if (--tiempo < 0) {
-          tiempo = duracionMinutos * 60; // reinicia ciclo
+          tiempo = duracionMinutos * 60;
         }
       }, 1000);
     }
 
     document.addEventListener('DOMContentLoaded', () => {
       cargarCatálogo();
-      iniciarTemporizador(300); // 5 horas regresivas de oferta
+      iniciarTemporizador(300);
     });
   </script>
 </body>
