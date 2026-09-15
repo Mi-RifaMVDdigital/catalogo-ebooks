@@ -9,7 +9,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   
   <style>
-    /* RESET & ESTILOS VERDE MINT */
+    /* RESET & ESTILOS VERDE MINT PREDETERMINADOS */
     * {
       margin: 0;
       padding: 0;
@@ -18,13 +18,13 @@
     }
 
     body {
-      background-color: #f0fdf4; /* Fondo verde menta original */
+      background-color: #f0fdf4; /* Fondo verde claro pastel */
       color: #1e293b;
       line-height: 1.6;
       padding-bottom: 40px;
     }
 
-    /* BARRA SUPERIOR DE INCENTIVO */
+    /* BARRA SUPERIOR DE CONFIANZA */
     .top-bar {
       background-color: #166534;
       color: #ffffff;
@@ -34,7 +34,7 @@
       font-weight: 600;
     }
 
-    /* CAJA DE VIDEO EN BUCLE (HERO VIDEO) */
+    /* CAJA DE VIDEO EN BUCLE */
     .hero-video-container {
       position: relative;
       max-width: 1000px;
@@ -50,7 +50,7 @@
       overflow: hidden;
       box-shadow: 0 10px 25px -5px rgba(22, 101, 52, 0.2);
       border: 3px solid #ffffff;
-      background-color: #0f172a;
+      background-color: #1e293b;
     }
 
     .hero-video {
@@ -59,7 +59,7 @@
       object-fit: cover;
     }
 
-    /* BUSCADOR DE E-BOOKS */
+    /* BUSCADOR FÁCIL */
     .search-container {
       max-width: 600px;
       margin: 0 auto 25px auto;
@@ -116,7 +116,7 @@
     }
     .btn-combo:hover { transform: scale(1.03); }
 
-    /* GRID Y TARJETAS DEL CATÁLOGO */
+    /* GRID Y TARJETAS DEL CATÁLOGO (AJUSTADAS AL TAMAÑO DEL E-BOOK) */
     .grid { 
       display: grid; 
       grid-template-columns: repeat(auto-fit, minmax(280px, 340px)); 
@@ -182,7 +182,7 @@
     <p style="color: #475569; font-size: 1.05rem;">Guías prácticas y de rápida lectura para dominar tu dinero</p>
   </header>
 
-  <!-- REPRODUCTOR DE VIDEO EN BUCLE DE CORTA DURACIÓN -->
+  <!-- CAJA CON EL VIDEO EN BUCLE DESDE TU REPOSITORIO -->
   <div class="hero-video-container">
     <div class="video-box">
       <video autoplay loop muted playsinline class="hero-video">
@@ -192,7 +192,7 @@
     </div>
   </div>
 
-  <!-- BUSCADOR -->
+  <!-- BUSCADOR FÁCIL -->
   <div class="search-container">
     <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar un e-book por título..." onkeyup="filtrarLibros()">
   </div>
@@ -216,7 +216,7 @@
   <div class="grid" id="catalogo"></div>
 
   <script>
-    // CREDENCIALES DE SUPABASE
+    // TUS CREDENCIALES EXACTAS
     const SUPABASE_URL = 'https://kmhnfeqjjspzbfekzlnz.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_ps5LZJw82pRYojwsfKtM9A_Y8hc7DOQ';
     const PHONE_WHATSAPP = '573161079509';
