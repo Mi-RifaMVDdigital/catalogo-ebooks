@@ -301,6 +301,23 @@
       margin-top: 50px;
       font-size: 0.88rem;
     }
+    /* ESTILOS DE LA BARRA DE CATEGORÍAS */
+    .cat-btn {
+      background: #ffffff;
+      border: 2px solid #6ee7b7;
+      color: #064e3b;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .cat-btn.active, .cat-btn:hover {
+      background: #047857;
+      color: #ffffff;
+      border-color: #047857;
+    }
   </style>
 </head>
 <body>
@@ -331,6 +348,14 @@
   </div>
 
   <!-- BUSCADOR -->
+  <!-- BARRA DE CATEGORÍAS -->
+  <div id="category-bar" style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; max-width: 900px; margin: 0 auto 20px auto; padding: 0 20px;">
+    <button class="cat-btn active" onclick="filtrarCategoria('TODOS', this)">Todas</button>
+    <button class="cat-btn" onclick="filtrarCategoria('Finanzas', this)">Finanzas</button>
+    <button class="cat-btn" onclick="filtrarCategoria('Inteligencia Artificial', this)">IA & Tecnología</button>
+    <button class="cat-btn" onclick="filtrarCategoria('Emprendimiento', this)">Emprendimiento</button>
+    <button class="cat-btn" onclick="filtrarCategoria('Software', this)">Software</button>
+  </div>
   <div class="search-container">
     <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar un e-book por título..." onkeyup="filtrarLibros()">
   </div>
@@ -523,6 +548,94 @@
       cargarCatálogo();
       iniciarTemporizador(300);
     });
+    let categoriaActual = 'TODOS';
+
+    // 1. Carga los e-books ordenados por la columna 'orden' (1, 2, 3...)
+    async function cargarCatálogo() {
+      const container = document.getElementById('catalogo');
+      const loading = document.getElementById('loading');
+
+      const { data: ebooks, error } = await clienteSupabase
+        .from('ebooks')
+        .select('*')
+        .eq('activo', true)
+        .order('orden', { ascending: true }); // Muestra los productos según la posición asignada
+
+      loading.style.display = 'none';
+
+      if (error) {
+        console.error(error);
+        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: red;">Error al cargar datos.</p>';
+        return;
+      }
+
+      ebooksGlobales = ebooks || [];
+      renderizarTarjetas(ebooksGlobales);
+    }
+
+    // 2. Renderiza la tarjeta leyendo la 'etiqueta' que le asignes en Supabase
+    function renderizarTarjetas(lista) {
+      const container = document.getElementById('catalogo');
+      container.innerHTML = '';
+
+      if (lista.length === 0) {
+        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #064e3b; font-weight: 600;">No hay productos en esta categoría.</p>';
+        return;
+      }
+
+      lista.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        
+        const precioFormateado = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(item.precio_cop);
+        const textWa = encodeURIComponent(`Hola, me interesa comprar "${item.titulo}" por ${precioFormateado}`);
+        const linkWa = `https://wa.me/${PHONE_WHATSAPP}?text=${textWa}`;
+        const imgHtml = item.imagen_url ? `<img src="${item.imagen_url}" alt="${item.titulo}">` : '';
+
+        // Muestra la etiqueta asignada en Supabase (ej: 🔥 TOP 1) o la oculta si la dejas vacía
+        const badgeHtml = item.etiqueta ? `<span class="badge-discount">${item.etiqueta}</span>` : '';
+
+        card.innerHTML = `
+          ${badgeHtml}
+          <div>
+            ${imgHtml}
+            <h3>${item.titulo}</h3>
+            <p>${item.descripcion || ''}</p>
+          </div>
+          <div class="card-footer">
+            <div class="price">${precioFormateado}</div>
+            <a href="${linkWa}" target="_blank" onclick="registrarClick('${item.id}')" class="btn-wa">Comprar</a>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // 3. Filtrado dinámico por categoría
+    function filtrarCategoria(cat, btn) {
+      categoriaActual = cat;
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      aplicarFiltros();
+    }
+
+    // 4. Filtrado por texto
+    function filtrarLibros() {
+      aplicarFiltros();
+    }
+
+    // 5. Combina la búsqueda por texto y categoría
+    function aplicarFiltros() {
+      const texto = document.getElementById('searchInput').value.toLowerCase();
+      
+      const filtrados = ebooksGlobales.filter(book => {
+        const coincideTexto = book.titulo.toLowerCase().includes(texto) || (book.descripcion && book.descripcion.toLowerCase().includes(texto));
+        const coincideCat = categoriaActual === 'TODOS' || (book.categoria && book.categoria.toLowerCase() === categoriaActual.toLowerCase());
+        return coincideTexto && coincideCat;
+      });
+
+      renderizarTarjetas(filtrados);
+    }
   </script>
 </body>
 </html>
