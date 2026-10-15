@@ -463,70 +463,13 @@
     const textCombo = encodeURIComponent('Hola! Quiero aprovechar la oferta del MEGA PACK: TRILOGÍA COMPLETA por $39.900 COP');
     document.getElementById('btnComboWa').href = `https://wa.me/${PHONE_WHATSAPP}?text=${textCombo}`;
 
-    async function cargarCatálogo() {
-      const container = document.getElementById('catalogo');
-      const loading = document.getElementById('loading');
-
-      const { data: ebooks, error } = await clienteSupabase
-        .from('ebooks')
-        .select('*')
-        .eq('activo', true)
-        .order('created_at', { ascending: false });
-
-      loading.style.display = 'none';
-
-      if (error) {
-        console.error(error);
-        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: red;">Error al conectar con la base de datos.</p>';
-        return;
-      }
-
-      ebooksGlobales = ebooks || [];
-      renderizarTarjetas(ebooksGlobales);
-    }
-
-    function renderizarTarjetas(lista) {
-      const container = document.getElementById('catalogo');
-      container.innerHTML = '';
-
-      if (lista.length === 0) {
-        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #475569;">No se encontraron e-books con ese título.</p>';
-        return;
-      }
-
-      lista.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        
-        const precioFormateado = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(item.precio_cop);
-        const textWa = encodeURIComponent(`Hola, me interesa comprar el e-book "${item.titulo}" por ${precioFormateado}`);
-        const linkWa = `https://wa.me/${PHONE_WHATSAPP}?text=${textWa}`;
-        const imgHtml = item.imagen_url ? `<img src="${item.imagen_url}" alt="${item.titulo}">` : '';
-
-        card.innerHTML = `
-          <span class="badge-discount">🔥 MÁS VENDIDO</span>
-          <div>
-            ${imgHtml}
-            <h3>${item.titulo}</h3>
-            <p>${item.descripcion || ''}</p>
-          </div>
-          <div class="card-footer">
-            <div class="price">${precioFormateado}</div>
-            <a href="${linkWa}" target="_blank" onclick="registrarClick('${item.id}')" class="btn-wa">Comprar</a>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    function filtrarLibros() {
-      const texto = document.getElementById('searchInput').value.toLowerCase();
-      const filtrados = ebooksGlobales.filter(book => book.titulo.toLowerCase().includes(texto));
-      renderizarTarjetas(filtrados);
-    }
-
     async function registrarClick(ebookId) {
-      await clienteSupabase.from('leads_whatsapp').insert([{ ebook_id: ebookId, origen: 'landing_page' }]);
+      try {
+        const { error } = await clienteSupabase.from('leads_whatsapp').insert([{ ebook_id: ebookId, origen: 'landing_page' }]);
+        if (error) console.warn('No se pudo registrar el clic:', error.message);
+      } catch (e) {
+        console.warn('No se pudo registrar el clic:', e);
+      }
     }
 
     function toggleFaq(element) {
@@ -555,6 +498,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('btnSoporteWa').href = `https://wa.me/${PHONE_WHATSAPP}?text=${encodeURIComponent('Hola! Tengo una consulta antes de comprar')}`;
       cargarCatálogo();
       iniciarTemporizador(300);
     });
@@ -567,7 +511,7 @@
 
       const { data: ebooks, error } = await clienteSupabase
         .from('ebooks')
-        .select('*')
+        .select('id,titulo,subtitulo,descripcion,precio_cop,imagen_url,categoria,etiqueta,orden,activo,created_at')
         .eq('activo', true)
         .order('orden', { ascending: true }); // Muestra los productos según la posición asignada
 
@@ -648,7 +592,7 @@
     }
   </script>
   <!-- BOTÓN FLOTANTE DE WHATSAPP SOPORTE -->
-  <a href="https://wa.me/573013097267?text=Hola!%20Tengo%20una%20consulta%20antes%20de%20comprar" 
+  <a id="btnSoporteWa" href="#" 
      target="_blank" 
      style="position: fixed; bottom: 20px; right: 20px; background-color: #25d366; color: white; border-radius: 50px; padding: 12px 20px; font-weight: bold; font-size: 0.9rem; text-decoration: none; box-shadow: 0 4px 12px rgba(0,0,0,0.25); z-index: 1000; display: flex; align-items: center; gap: 8px;">
     💬 ¿Dudas? Habla con Soporte
